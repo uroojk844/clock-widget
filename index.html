@@ -51,7 +51,7 @@
 
       async function getWeatherData(lat, lon) {
         let response = await fetch(
-          `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat},${lon}&aqi=no&current_fields=temp_c`,
+          `https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat},${lon}&aqi=no&current_fields=temp_c`,
           {
             headers: {
               "X-Api-Key": API_KEY,
