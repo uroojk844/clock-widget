@@ -25,8 +25,13 @@
         <img src="" class="icon" />
         <div class="weather">NA</div>
         <div class="minmax">
-          <div class="high dflex" >
-            <img src="./icon/humidity.svg" width="32" class="invert" alt="gps" />
+          <div class="high dflex">
+            <img
+              src="./icon/humidity.svg"
+              width="32"
+              class="invert"
+              alt="gps"
+            />
             <span>0</span>
           </div>
           <div class="low dflex">
@@ -39,8 +44,8 @@
     <script>
       const API_KEY = "a0661445cd944a2287c101220230204";
 
-      navigator.geolocation.getCurrentPosition((data) => {
-        let { latitude, longitude } = data.coords;
+      navigator.geolocation.getCurrentPosition(async (data) => {
+        let { latitude, longitude } = await data.coords;
         getWeatherData(latitude, longitude);
       });
 
