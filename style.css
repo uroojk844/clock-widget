@@ -1,0 +1,163 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+:root {
+  --accent: orange;
+  --bg: #000;
+}
+
+body {
+  background-color: var(--bg);
+  min-height: 100vh;
+  color: white;
+  overflow: hidden;
+  user-select: none;
+}
+
+.wrapper {
+  display: grid;
+  height: 100vh;
+  grid-template-columns: 1.2fr 0.8fr;
+
+  & > div {
+    position: relative;
+  }
+}
+
+.invert {
+  filter: invert();
+}
+
+.weatherContainer {
+  display: grid;
+  place-content: center;
+  justify-content: start;
+  font-size: 42px;
+
+  .location {
+    font-size: 42px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .temp {
+    font-size: 275px;
+    font-weight: 600;
+  }
+
+  .icon {
+    width: 42px;
+    margin-bottom: 16px;
+  }
+
+  .minmax {
+    display: flex;
+    gap: 42px;
+    margin-top: 24px;
+  }
+}
+
+.dflex {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.clock {
+  border-radius: 50%;
+  width: 300px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transition: 300ms ease;
+  transform: translate(-50%, -50%) scale(2);
+}
+
+@media screen and (width<600px) {
+  .clock {
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+.line {
+  width: 2px;
+  height: 10px;
+  background-color: #999;
+  position: absolute;
+  z-index: -1;
+
+  &:nth-child(5n) {
+    background-color: white;
+  }
+}
+
+.text {
+  width: 36px;
+  aspect-ratio: 1;
+  position: absolute;
+  top: 100%;
+  left: calc(50% - 18px);
+  text-align: center;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.ring {
+  width: 9px;
+  aspect-ratio: 1;
+  outline: 3px solid white;
+  border: 3px solid var(--accent);
+  border-radius: 50%;
+  background-color: var(--bg);
+  z-index: 1;
+}
+
+.second,
+.minute,
+.hour {
+  position: absolute;
+  width: 2px;
+  height: 125px;
+  top: 50%;
+  left: calc(50% - 1px);
+  transform-origin: 1px 0;
+  background-color: white;
+}
+
+.second {
+  height: 166px;
+  transform-origin: 1px 26px;
+  top: calc(50% - 26px);
+  background-color: var(--accent);
+}
+
+.hour {
+  height: 105px;
+}
+
+.minute::after,
+.hour::after {
+  position: absolute;
+  content: "";
+  width: 8px;
+  height: 100px;
+  left: -3px;
+  top: 100%;
+  transform: translateY(-100%);
+  background-color: white;
+  border-radius: 4px;
+}
+
+.hour::after {
+  height: 80px;
+}

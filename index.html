@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="wrapper">
+      <div>
+        <div class="clock">
+          <div class="hour"></div>
+          <div class="minute"></div>
+          <div class="second"></div>
+          <div class="ring"></div>
+        </div>
+      </div>
+      <div class="weatherContainer">
+        <div class="location">
+          <span>NA</span>
+          <img src="./icon/gps.svg" class="invert" alt="gps" />
+        </div>
+        <div class="temp">0°</div>
+        <img src="" class="icon" />
+        <div class="weather">NA</div>
+        <div class="minmax">
+          <div class="high dflex" >
+            <img src="./icon/humidity.svg" width="32" class="invert" alt="gps" />
+            <span>0</span>
+          </div>
+          <div class="low dflex">
+            <img src="./icon/uv.svg" width="40" class="invert" alt="gps" />
+            <span>0</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      const API_KEY = "a0661445cd944a2287c101220230204";
+
+      navigator.geolocation.getCurrentPosition((data) => {
+        let { latitude, longitude } = data.coords;
+        getWeatherData(latitude, longitude);
+      });
+
+      async function getWeatherData(lat, lon) {
+        let response = await fetch(
+          `http://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${lat},${lon}&aqi=no&current_fields=temp_c`,
+          {
+            headers: {
+              "X-Api-Key": API_KEY,
+            },
+          }
+        );
+        let data = await response.json();
+        console.log(data);
+
+        let location = document.querySelector(".location span");
+        let temp = document.querySelector(".temp");
+        let weather = document.querySelector(".weather");
+        let icon = document.querySelector(".icon");
+        let high = document.querySelector(".high span");
+        let low = document.querySelector(".low span");
+
+        location.innerHTML = data.location.name;
+        temp.innerHTML = Math.trunc(data.current.temp_c) + "°";
+        weather.innerHTML = data.current.condition.text;
+        icon.src = data.current.condition.icon;
+        high.innerHTML = data.current.humidity;
+        low.innerHTML = data.current.uv;
+      }
+
+      let clock = document.querySelector(".clock");
+      let radius = clock.clientHeight / 2 - 14;
+
+      let t = 12;
+      for (let index = 0; index < 360; index += 6) {
+        let span = document.createElement("span");
+        span.className = "line";
+        if ((index / 6) % 5 == 0) {
+          let text = document.createElement("span");
+          text.className = "text";
+          text.innerHTML = t;
+          text.style.transform = `rotate(${-index}deg)`;
+          span.append(text);
+          if (t == 12) {
+            t = 0;
+          }
+          t++;
+        }
+        span.style.transform = `rotate(${index}deg) translateY(${-radius}px)`;
+        clock.append(span);
+      }
+
+      let second = document.querySelector(".second");
+      let minute = document.querySelector(".minute");
+      let hour = document.querySelector(".hour");
+
+      setInterval(() => {
+        let d = new Date();
+        let s = d.getSeconds();
+        let m = d.getMinutes();
+        let h = d.getHours();
+
+        second.style.transform = `rotate(${s * 6}deg)`;
+        minute.style.transform = `rotate(${m * 6 - 180}deg)`;
+        hour.style.transform = `rotate(${h * 30 - 180}deg)`;
+      }, 1000 / 60);
+    </script>
+  </body>
+</html>
