@@ -8,10 +8,29 @@
 :root {
   --accent: orange;
   --bg: #000;
+  --brightness: 0.3;
+}
+
+:fullscreen {
+  background: transparent;
+}
+
+:fullscreen::backdrop {
+  background: linear-gradient(
+      rgba(0, 0, 0, var(--brightness)),
+      rgba(0, 0, 0, var(--brightness))
+    ),
+    url(http://picsum.photos/1920/1080.webp) var(--bg);
+  background-size: cover;
 }
 
 body {
-  background-color: var(--bg);
+  background: linear-gradient(
+      rgba(0, 0, 0, var(--brightness)),
+      rgba(0, 0, 0, var(--brightness))
+    ),
+    url(http://picsum.photos/1920/1080.webp) var(--bg);
+  background-size: cover;
   height: 100vh;
   color: white;
   overflow: hidden;
@@ -85,20 +104,21 @@ body {
   position: absolute;
   top: 0;
   left: 50%;
-  transform: translate(-50%, 32px);
+  transform: translate(-50%, -100%) scale(0.5);
   background-color: var(--bg);
-  display: none;
   align-items: center;
+  display: flex;
   padding: 12px;
   border-radius: 100vmax;
   box-shadow: 0 0 4px rgb(13, 14, 13);
+  transition: 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   
   &.active {
-    display: flex;
+    transform: translate(-50%, 32px) scale(1);
   }
 
   &.active .icon {
-    animation: zoom 5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    animation: zoom 5s .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
   .icon {
@@ -135,7 +155,7 @@ body {
   20% {
     transform: scale(1);
   }
-  80% {
+  85% {
     transform: scale(1);
   }
   100% {
