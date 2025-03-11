@@ -41,6 +41,14 @@
         </div>
       </div>
     </section>
+
+    <div class="notification">
+      <div class="icon">
+        <img src="./icon/info.svg" class="invert" alt="gps" />
+      </div>
+      <div class="msg">Double click to close FullScreen</div>
+    </div>
+
     <script>
       const API_KEY = "a0661445cd944a2287c101220230204";
 
@@ -48,6 +56,37 @@
         let { latitude, longitude } = await data.coords;
         getWeatherData(latitude, longitude);
       });
+
+      let body = document.body;
+      let notification = document.querySelector(".notification");
+
+      function showNotification() {
+        notification.classList.add("active");
+        setTimeout(() => {
+          notification.classList.remove("active");
+        }, 5000);
+      }
+
+      window.onclick = async function () {
+        if (body.requestFullscreen) {
+          await body.requestFullscreen().then(showNotification);
+        } else if (body.webkitRequestFullscreen) {
+          body.webkitRequestFullscreen().then(showNotification);
+        } else if (body.msRequestFullscreen) {
+          body.msRequestFullscreen();
+        }
+        showNotification();
+      };
+      
+      window.ondblclick = function () {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      };
 
       async function getWeatherData(lat, lon) {
         let response = await fetch(
@@ -110,7 +149,7 @@
         second.style.transform = `rotate(${s * 6}deg)`;
         minute.style.transform = `rotate(${m * 6 - 180}deg)`;
         hour.style.transform = `rotate(${h * 30 - 180}deg)`;
-      }, 1000 / 60);
+      }, 500);
     </script>
   </body>
 </html>
