@@ -11,25 +11,25 @@
   --brightness: 0.3;
 }
 
-:fullscreen {
-  background: transparent;
-}
-
-:fullscreen::backdrop {
+body:has(#wallpaper:checked) {
   background: linear-gradient(
       rgba(0, 0, 0, var(--brightness)),
       rgba(0, 0, 0, var(--brightness))
     ),
     url(http://picsum.photos/1920/1080.webp) var(--bg);
-  background-size: cover;
+
+  &:fullscreen::backdrop {
+    background: linear-gradient(
+        rgba(0, 0, 0, var(--brightness)),
+        rgba(0, 0, 0, var(--brightness))
+      ),
+      url(http://picsum.photos/1920/1080.webp) var(--bg);
+    background-size: cover;
+  }
 }
 
 body {
-  background: linear-gradient(
-      rgba(0, 0, 0, var(--brightness)),
-      rgba(0, 0, 0, var(--brightness))
-    ),
-    url(http://picsum.photos/1920/1080.webp) var(--bg);
+  background-color: var(--bg);
   background-size: cover;
   height: 100vh;
   color: white;
@@ -37,10 +37,48 @@ body {
   user-select: none;
 }
 
+.options {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 16px;
+
+  input {
+    --padding: 6px;
+
+    position: relative;
+    appearance: none;
+    width: 64px;
+    height: 32px;
+    background-color: #1114;
+    border-radius: 100vmax;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    border: 1px solid #4446;
+
+    &::after {
+      position: absolute;
+      content: "";
+      height: calc(100% - var(--padding) * 2);
+      aspect-ratio: 1;
+      background-color: #4446;
+      border-radius: 50%;
+      left: 0px;
+      transform: translateX(var(--padding));
+      transition: 0.25s ease;
+    }
+
+    &:checked::after {
+      transform: translateX(calc(64px - 100% - var(--padding)));
+    }
+  }
+}
+
 .wrapper {
   display: grid;
   height: 100vh;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.3fr 0.7fr;
 
   & > div {
     position: relative;
@@ -55,10 +93,9 @@ body {
   display: grid;
   place-content: center;
   justify-content: start;
-  font-size: 42px;
+  font-size: clamp(16px, 16px + 1.75vw, 42px);
 
   .location {
-    font-size: 42px;
     display: flex;
     align-items: center;
     gap: 16px;
@@ -112,13 +149,13 @@ body {
   border-radius: 100vmax;
   box-shadow: 0 0 4px rgb(13, 14, 13);
   transition: 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  
+
   &.active {
     transform: translate(-50%, 32px) scale(1);
   }
 
   &.active .icon {
-    animation: zoom 5s .5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    animation: zoom 5s 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
   .icon {
@@ -182,6 +219,27 @@ body {
   }
 }
 
+@media screen and (width<992px) {
+  .clock {
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+}
+
+@media screen and (width<768px) and (orientation: landscape) {
+  .weatherContainer {
+    .location {
+      margin-bottom: 16px;
+    }
+
+    .temp {
+      font-size: 60px;
+    }
+  }
+  .clock {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
 @media screen and (width<600px) {
   .wrapper {
     grid-template-columns: 1fr;
@@ -189,33 +247,10 @@ body {
   }
   .weatherContainer {
     padding: 0 36px;
-    font-size: 28px;
-
-    .location {
-      font-size: inherit;
-    }
   }
   .temp {
     margin-top: 10px;
     font-size: 60px;
-  }
-  .clock {
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
-@media screen and (width<768px) and (orientation: landscape) {
-  .weatherContainer {
-    font-size: 28px;
-
-    .location {
-      font-size: 28px;
-      margin-bottom: 16px;
-    }
-
-    .temp {
-      font-size: 60px;
-    }
   }
   .clock {
     transform: translate(-50%, -50%) scale(1);

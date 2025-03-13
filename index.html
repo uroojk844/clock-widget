@@ -42,6 +42,10 @@
       </div>
     </section>
 
+    <div class="options">
+      <input type="checkbox" id="wallpaper" checked />
+    </div>
+
     <div class="notification">
       <div class="icon">
         <img src="./icon/info.svg" class="invert" alt="gps" />
@@ -55,6 +59,8 @@
       navigator.geolocation.getCurrentPosition(async (data) => {
         let { latitude, longitude } = await data.coords;
         getWeatherData(latitude, longitude);
+
+        setInterval(() => getWeatherData(latitude, longitude), 30000);
       });
 
       let body = document.body;
@@ -77,7 +83,7 @@
         }
         showNotification();
       };
-      
+
       window.ondblclick = function () {
         if (document.exitFullscreen) {
           document.exitFullscreen();
@@ -146,9 +152,9 @@
         let m = d.getMinutes();
         let h = d.getHours();
 
-        second.style.transform = `rotate(${s * 6}deg)`;
+        second.style.transform = `rotate(${s * 6 - 180}deg)`;
         minute.style.transform = `rotate(${m * 6 - 180}deg)`;
-        hour.style.transform = `rotate(${h * 30 - 180}deg)`;
+        hour.style.transform = `rotate(${h * 30 + m / 2 - 180}deg)`;
       }, 500);
     </script>
   </body>
